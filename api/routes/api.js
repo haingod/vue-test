@@ -12,6 +12,20 @@ var auth = function(req, res, next) {
     else
         return res.sendStatus(401);
 };
+
+
+
+/* GET users listing. */
+router.get('/list', function(req, res, next) {
+    res.send([
+        {'name':'son'},
+        {'name':'son'},
+        {'name':'son'},
+    ])
+
+});
+
+
 /* GET users listing. */
 router.get('/products', function(req, res, next) {
     productmodel.getProducts()
