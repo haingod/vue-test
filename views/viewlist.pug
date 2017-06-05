@@ -1,0 +1,95 @@
+extends layout
+block content
+    #myModalUpdate.modal.fade(role='dialog')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal') ×
+                    h4.modal-title Update Product
+                .modal-body
+                    form(method='post',action='/product/editproduct',enctype='multipart/form-data')
+                        .form-group(style="display: none")
+                            label ID
+                            input(name='id' ng-model="product_form._id",class="form-control")
+                        .form-group
+                            label Name
+                            input(name='name' ng-model="product_form.name",class="form-control")
+                        .form-group
+                            label Type
+                            input(name='type' ng-model="product_form.type",class="form-control")
+                        .form-group
+                            label Manufacturer
+                            input(name='manufacturer' ng-model="product_form.manufacturer",class="form-control")
+                        .form-group
+                            label Main Image:
+                                img(src='/images/{{product_form.image}}' style="width:100px; height:100px;")
+                                input(style="display: none" name="defaultimage" class="form-control" value = "{{product_form.image}}" )
+                            input.form-control(type="file",file="file", id="photo", name="image")
+                .modal-footer
+                    button.btn.btn-default(type='button',ng-click="editProduct()") Save
+                    button.btn.btn-default(type='button', data-dismiss='modal') Close
+
+
+    #myModalDelete.modal.fade(role='dialog')
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal') ×
+                    h4.modal-title Delete Product
+                .modal-body
+                    form
+                        .form-group(style="display: none")
+                            label ID
+                            input(ng-model="product_form._id",class="form-control")
+                        .form-group
+                            label name
+                            input(ng-model="product_form.name",class="form-control")
+                        .form-group
+                            label type
+                            input(ng-model="product_form.type",class="form-control")
+                        .form-group
+                            label manufacturer
+                            input(ng-model="product_form.manufacturer",class="form-control")
+                        .form-group
+                            label Main Image:
+                                img(src='/images/{{product_form.image}}' style="width:100px; height:100px;")
+                .modal-footer
+                            button.btn.btn-default(type='button',onclick='confirm("Are you sure?")' ng-click="deleteProduct(product_form)") Delete
+                            button.btn.btn-default(type='button', data-dismiss='modal') Close
+    .content-box-large
+        .panel-heading
+            .col-md-12.col-md-offset-11
+                if user
+                    a(href="/product/addproduct")
+                        i.fa.fa-plus(style="font-size:30px")
+            .panel-title PRODUCT LIST
+        .panel-body
+            table.datatable1.table.table-striped.table-bordered(cellpadding='0', cellspacing='0', border='0')
+                thead
+                    tr
+                        th Image
+                        th Name
+                        th Type
+                        th Manufacturer
+                        if user
+                            th
+                tbody(ng-repeat ="product in productlist")
+                    tr
+                        td
+                            ul.gallery
+                                a(href='/images/{{product.image}}', rel='prettyPhoto')
+                                    img(src='/images/{{product.image}}', width='100px', height='100px')
+                        td {{product.name}}
+                        td {{product.type}}
+                        td.center {{product.manufacturer}}
+                        if user
+                            td.center.text-center(style="font-size:15px")
+                                a(href ng-click="fillDataToForm(product)" data-toggle='modal', data-target='#myModalUpdate')
+                                    i.fa.fa-edit
+                                span(style="margin:0 10px") |
+                                a(href ng-click="fillDataToForm(product)" data-toggle='modal',style="color:red", data-target='#myModalDelete')
+                                    i.fa.fa-trash
+                tfoot(ng-if = "loading")
+                    tr
+                        th(colspan=3)
+                            i.fa.fa-refresh.fa-spin

@@ -1,0 +1,78 @@
+doctype html
+html(ng-app="app.admin")
+  head
+    title= title
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/stylesheets/prettyPhoto.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/login.css')
+  body(ng-controller="adminController")
+    #login-modal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='myModalLabel', aria-hidden='true', style='display: none;')
+      .modal-dialog
+        .loginmodal-container
+          h1 Login to Your Account
+          br
+          form(name='userform',method='post',action='/users/login',enctype='multipart/form-data')
+            div.err(ng-if="sai_mat_khau") {{sai_mat_khau}}
+
+
+            div
+              input(ng-required="true",ng-minlength="3",type='text',name="username", ng-model='username', placeholder='Username')
+              div.error(ng-if='userform.username.$invalid')
+                p(ng-if='userform.username.$error.required && !userform.username.$pristine') bạn chưa nhâp username
+                p(ng-if='userform.username.$error.minlength && !userform.username.$pristine') username it nhat 3 ki tu
+            input(ng-required="true", type='password',name="password", ng-model='password', placeholder='Password')
+            a.btn.btn-primary(ng-class="{ 'disable' : userform.$invalid }", ng-click='login(userform)') submit
+            a.btn.btn-default(href='/users/register') Register
+
+    .header
+      nav.navbar.navbar-inverse.navbar-fixed-top
+        .container
+          .navbar-header
+            button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+              span.sr-only Toggle navigation
+              span.icon-bar
+              span.icon-bar
+              span.icon-bar
+            a.navbar-brand(href='/') Shopping System
+          #navbar.collapse.navbar-collapse
+            ul.nav.navbar-nav.navbar-right
+              if !user
+                li(class=(title === "Register") ? "active" : "")
+                  a(href='/users/register') Register
+                li(class=(title === "Login") ? "active" : "")
+                  a(href='#', data-toggle='modal', data-target='#login-modal') Login
+              if user
+                li
+                  a(href='/users/logout') Log Out
+
+    .page-content
+      .row
+        .col-md-2.col-left
+          .sidebar.content-box(style='display: block;')
+            ul.nav
+              // Main menu
+              li.current
+                a(href='/')
+                  i.glyphicon.glyphicon-home
+                  |  Dashboard
+              li.submenu
+                a(href='#')
+                  i.glyphicon.glyphicon-list
+                  |  Products
+                  span.caret.pull-right
+                // Sub menu
+                ul
+                  li
+                    a(href='/product/getlist') View List Products
+        .col-md-10
+          //!=messages()
+          block content
+    script(src='https://code.jquery.com/jquery.js')
+    script(src='/javascripts/bootstrap.min.js')
+    script(src='/javascripts/jquery.prettyPhoto.js')
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js")
+    script(src='/javascripts/script.js')
+    script(src='/javascripts/app.js')
+    script(src='/javascripts/services.js')

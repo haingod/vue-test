@@ -1,0 +1,23 @@
+extends layout
+block content
+    h4
+        p Please add product by using the form below
+        ul.errors
+            if errors
+                each error, i in errors
+                    li.alert.alert-danger #{error.msg}
+        form(enctype='multipart/form-data')
+            .form-group
+                label Name
+                input.form-control(name='name',type='text',placeholder='Enter Name Of Product...',ng-model="name")
+            .form-group
+                label Type
+                input.form-control(name='type',type='text',placeholder='Enter Type...',ng-model='type')
+            .form-group
+                label Manufacturer
+                input.form-control(name='manufacturer',type='text',placeholder='Enter Name Of Manufacturer...',ng-model='manufacturer')
+            .form-group
+                label Main Images:
+                input.form-control(type="file",file="file", id="photo", name="image")
+            button.btn.btn-default(ng-click="addProduct(formData)") Add
+        div.err(ng-if="gioi_han") {{gioi_han}}
