@@ -1,2 +1,13 @@
-/node_modules
+/api/node_modules
+
+/client/node_modules
+/clientdist/
+/clientnpm-debug.log*
+/clientyarn-debug.log*
+/clientyarn-error.log*
+/clienttest/unit/coverage
+/clienttest/e2e/reports
+/clientselenium-debug.log
+
 /.idea
+/client/.idea
